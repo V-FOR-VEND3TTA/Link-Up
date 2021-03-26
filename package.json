@@ -1,0 +1,16 @@
+{
+  "name": "linkup",
+  "version": "1.0.0",
+  "description": "Real time group chat application for developers",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server"
+  },
+  "author": "George \"Geohot\" Hlongwane",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "socket.io": "^4.0.0"
+  }
+}
