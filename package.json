@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server"
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -13,17 +13,18 @@
   },
   "keywords": [
     "Node",
-    "Express"
+    "Developer",
+    "Chat room"
   ],
   "author": "\"George 'Geohot' Hlongwane\"",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/V-FOR-VEND3TTA/Link-Up/issues"
   },
-  "homepage": "https://github.com/V-FOR-VEND3TTA/Link-Up#readme",
+  "homepage": "https://github.com/V-FOR-VEND3TTA/Link-Up/public/index.html",
   "dependencies": {
-    "express": "^4.17.3",
-    "moment": "^2.29.1",
-    "socket.io": "^4.4.1"
+    "express": "4.17.3",
+    "moment": "2.29.1",
+    "socket.io": "4.4.1"
   }
 }

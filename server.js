@@ -1,32 +1,35 @@
+// const http = require("http"); // For express
+// Allows us access to files
 const path = require("path");
 
-const http = require("http"); // For express
-
+// Allows us to use Express.js framework
 const express = require("express");
 
-const socketio = require("socket.io");
+const app = express();
+// Would allow 
+//const socketio = require("socket.io");
 
-const formatMessage = require("./utils/messages");
+//const formatMessage = require("./utils/messages");
 
-const {
-  userJoin,
+//const {
+/*  userJoin,
   getCurrentUser,
   userLeave,
   getRoomUsers,
 } = require("./utils/users");
+*/
 
-const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
+//const server = http.createServer(app);
+//const io = socketio(server);
 
-// Set the static folder
-app.use(express.static(path.join(__dirname, "dist")));
+// Set the static folder that Node will look for as program files
+app.use(express.static(path.join(__dirname, "public")));
 
 // The thing that sends the welcome message
-const botName = "Admin";
+//const botName = "Admin";
 
 // Run when the client connects
-io.on("connection", (socket) => {
+/*io.on("connection", (socket) => {
   socket.on("joinRoom", ({ username, room }) => {
     const user = userJoin(socket.id, username, room);
     socket.join(user.room);
@@ -74,8 +77,8 @@ io.on("connection", (socket) => {
     }
   });
 });
-
+*/
 // Use the port 3000 or the environment variable
 const PORT = 3000 || process.env.PORT;
 
-server.listen(PORT, () => console.log(`Server running in port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running in port ${PORT}`));
