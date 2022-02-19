@@ -1,4 +1,6 @@
-// const http = require("http"); // For express
+// For use by Express under the hood 
+const http = require("http"); 
+
 // Allows us access to files
 const path = require("path");
 
