@@ -7,9 +7,17 @@ const path = require("path");
 // Allows us to use Express.js framework
 const express = require("express");
 
+// To allow us to have the functionalities of input and output across pages
+const socketio = require('socket.io');
+
+// A constant that would be convenient to use
 const app = express();
-// Would allow 
-//const socketio = require("socket.io");
+
+// Explicitly stating that we are using the Express server
+const server = http.createServer(app);
+
+const io = socketio(server)
+
 
 //const formatMessage = require("./utils/messages");
 
@@ -21,7 +29,6 @@ const app = express();
 } = require("./utils/users");
 */
 
-//const server = http.createServer(app);
 //const io = socketio(server);
 
 // Set the static folder that Node will look for as program files
@@ -31,6 +38,9 @@ app.use(express.static(path.join(__dirname, "public")));
 //const botName = "Admin";
 
 // Run when the client connects
+io.on('connection', socket => {
+  console.log('New WS Connection...')
+})
 /*io.on("connection", (socket) => {
   socket.on("joinRoom", ({ username, room }) => {
     const user = userJoin(socket.id, username, room);
@@ -83,4 +93,4 @@ app.use(express.static(path.join(__dirname, "public")));
 // Use the port 3000 or the environment variable
 const PORT = 3000 || process.env.PORT;
 
-app.listen(PORT, () => console.log(`Server running in port ${PORT}`));
+server.listen(PORT, () => console.log(`Server running in port ${PORT}`));
