@@ -16,20 +16,10 @@ const app = express();
 // Explicitly stating that we are using the Express server
 const server = http.createServer(app);
 
-const io = socketio(server)
+const io = socketio(server);
 
-
-//const formatMessage = require("./utils/messages");
-
-//const {
-/*  userJoin,
-  getCurrentUser,
-  userLeave,
-  getRoomUsers,
-} = require("./utils/users");
-*/
-
-//const io = socketio(server);
+// How we format messages
+const formatMessage = require("./utils/messages");
 
 // Set the static folder that Node will look for as program files
 app.use(express.static(path.join(__dirname, "public")));
@@ -39,8 +29,22 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Run when the client connects
 io.on('connection', socket => {
-  console.log('New WS Connection...')
-})
+  // Welcome current user
+  socket.emit('message', 'Welcome to LinkUp!');
+
+  // Broadcast when user connects
+  socket.broadcast.emit('message', 'A user has joined the chat');
+
+  // When the client disconnects from
+  socket.on('disconnect', () => {
+    io.emit('message', 'A user has left the chat'); 
+  }) 
+
+  // Listen for chatMessage
+  socket.on('chatMessage', msg => {
+    io.emit('message', msg);
+  })
+});
 /*io.on("connection", (socket) => {
   socket.on("joinRoom", ({ username, room }) => {
     const user = userJoin(socket.id, username, room);
