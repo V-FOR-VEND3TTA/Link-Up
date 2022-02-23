@@ -1,4 +1,4 @@
-// Working with time
+// Working with time - Moment.js library
 const moment = require('moment'); 
 
 function formatMessage(username, text) {

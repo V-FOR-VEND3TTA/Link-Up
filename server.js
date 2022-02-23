@@ -1,14 +1,20 @@
-// For use by Express under the hood 
-const http = require("http"); 
-
 // Allows us access to files
 const path = require("path");
+
+// For use by Express under the hood 
+const http = require("http"); 
 
 // Allows us to use Express.js framework
 const express = require("express");
 
 // To allow us to have the functionalities of input and output across pages
 const socketio = require('socket.io');
+
+// How we format messages
+const formatMessage = require('./utils/messages');
+
+// User functionality 
+const { userJoin, getCurrentUser } = require('./utils/users')
 
 // A constant that would be convenient to use
 const app = express();
@@ -18,48 +24,36 @@ const server = http.createServer(app);
 
 const io = socketio(server);
 
-// How we format messages
-const formatMessage = require("./utils/messages");
-
 // Set the static folder that Node will look for as program files
 app.use(express.static(path.join(__dirname, "public")));
 
-// The thing that sends the welcome message
-//const botName = "Admin";
+// The bot that sends the welcome message
+const botName = "Admin";
 
-// Run when the client connects
+// Runs when the client connects
 io.on('connection', socket => {
-  // Welcome current user
-  socket.emit('message', 'Welcome to LinkUp!');
-
-  // Broadcast when user connects
-  socket.broadcast.emit('message', 'A user has joined the chat');
-
-  // When the client disconnects from
-  socket.on('disconnect', () => {
-    io.emit('message', 'A user has left the chat'); 
-  }) 
-
-  // Listen for chatMessage
-  socket.on('chatMessage', msg => {
-    io.emit('message', msg);
-  })
-});
-/*io.on("connection", (socket) => {
   socket.on("joinRoom", ({ username, room }) => {
     const user = userJoin(socket.id, username, room);
     socket.join(user.room);
+    // Welcome current user
+    socket.emit('message', formatMessage(botName, 'Welcome to LinkUp!'));
 
-    // Welcome the user
-    socket.emit("message", formatMessage(botName, "Welcome to LinkUp!"));
+    // Broadcast when user connects
+    socket.broadcast.to(user.room).emit('message', formatMessage(botName, 'A user has joined the chat'));
+  });
 
-    // Broadcast when a user connects
-    socket.broadcast
-      .to(user.room)
-      .emit(
-        "message",
-        formatMessage(botName, `${user.username} has joined the chat`)
-      );
+  // Listen for chatMessage
+  socket.on('chatMessage', msg => {
+    io.emit('User', msg);
+  });
+
+  // When the client disconnects from
+  socket.on('disconnect', () => {
+    io.emit('message', formatMessage(botName, 'A user has left the chat')); 
+  });     
+});
+/*
+    
     // Send users room info
     io.to(user.room).emit("roomUsers", {
       room: user.room,
