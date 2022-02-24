@@ -14,7 +14,7 @@ const socketio = require('socket.io');
 const formatMessage = require('./utils/messages');
 
 // User functionality 
-const { userJoin, getCurrentUser } = require('./utils/users')
+const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users')
 
 // A constant that would be convenient to use
 const app = express();
@@ -40,6 +40,13 @@ io.on('connection', socket => {
 
     // Broadcast when user connects
     socket.broadcast.to(user.room).emit('message', formatMessage(botName, `${user.username} has joined the chat`));
+    
+    // Send users room info
+    io.to(user.room).emit("roomUsers", {
+      room: user.room,
+      users: getRoomUsers(user.room),
+    });
+   
   });
 
   // Listen for chatMessage
@@ -49,41 +56,32 @@ io.on('connection', socket => {
     io.to(user.room).emit('message', formatMessage(user.username, msg))
   });
 
-  // When the client disconnects from
+  // When the client disconnects
   socket.on('disconnect', () => {
-    io.emit('message', formatMessage(botName, 'A user has left the chat')); 
-  });     
-});
-/*
-    
-    // Send users room info
-    io.to(user.room).emit("roomUsers", {
-      room: user.room,
-      users: getRoomUsers(user.room),
-    });
-  });
-
-  // Runs when a client disconnects
-  socket.on("disconnect", () => {
     // To identify which user left
     const user = userLeave(socket.id);
 
     if (user) {
-      io.to(user.room).emit(
-        "message",
-        formatMessage(botName, `${user.username} has left the chat`)
-      );
+      io.to(user.room).emit('message', formatMessage(botName, `${user.username} has left the chat`));
 
+       // Send users room info
+      io.to(user.room).emit("roomUsers", {
+        room: user.room,
+        users: getRoomUsers(user.room),
+    });
+    } 
+  });     
+});
+
+     
+    
+/*
       // Send users and room info
       io.to(user.room).emit("roomUsers", {
         room: user.room,
         users: getRoomUsers(user.room),
       });
-    }
-  });
-});
 */
-
 // Use the port 3000 or the environment variable
 const PORT = 3000 || process.env.PORT;
 
