@@ -28,23 +28,25 @@ const io = socketio(server);
 app.use(express.static(path.join(__dirname, "public")));
 
 // The bot that sends the welcome message
-const botName = "Admin";
+const botName = 'Cassandra Bot';
 
 // Runs when the client connects
 io.on('connection', socket => {
-  socket.on("joinRoom", ({ username, room }) => {
+  socket.on('joinRoom', ({ username, room }) => {
     const user = userJoin(socket.id, username, room);
     socket.join(user.room);
     // Welcome current user
     socket.emit('message', formatMessage(botName, 'Welcome to LinkUp!'));
 
     // Broadcast when user connects
-    socket.broadcast.to(user.room).emit('message', formatMessage(botName, 'A user has joined the chat'));
+    socket.broadcast.to(user.room).emit('message', formatMessage(botName, `${user.username} has joined the chat`));
   });
 
   // Listen for chatMessage
   socket.on('chatMessage', msg => {
-    io.emit('User', msg);
+    const user = getCurrentUser(socket.id);
+    // We want this message to be displayed to everyone in the room
+    io.to(user.room).emit('message', formatMessage(user.username, msg))
   });
 
   // When the client disconnects from
@@ -59,13 +61,6 @@ io.on('connection', socket => {
       room: user.room,
       users: getRoomUsers(user.room),
     });
-  });
-
-  // Listen for chatMessage
-  socket.on("chatMessage", (msg) => {
-    const user = getCurrentUser(socket.id);
-    // We want the message sent to be displayed to everybody
-    io.to(user.room).emit("message", formatMessage(user.username, msg));
   });
 
   // Runs when a client disconnects
@@ -88,6 +83,7 @@ io.on('connection', socket => {
   });
 });
 */
+
 // Use the port 3000 or the environment variable
 const PORT = 3000 || process.env.PORT;
 

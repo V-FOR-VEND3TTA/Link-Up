@@ -24,7 +24,6 @@ socket.on('message', message => {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 
-/* 
 
 // Get room and users
 socket.on("roomUsers", ({ room, users }) => {
@@ -32,9 +31,6 @@ socket.on("roomUsers", ({ room, users }) => {
   outputUsers(users);
 });
 
-  
-});
-*/
 
 // When message is submitted
 chatForm.addEventListener("submit", (e) => {
@@ -59,7 +55,7 @@ function outputMessage(message) {
   //  <p class="text">
   //  ${message.text}
   //  </p>`;
-  div.innerHTML = `<p class="meta"> ${message.user} <span>${message.time}</span></p>
+  div.innerHTML = `<p class="meta"> ${message.username} <span>${message.time}</span></p>
   <p class="text">${message.text}</p>`;
   document.querySelector(".chat-messages").appendChild(div); // Add a new div to the chat messages
 }
