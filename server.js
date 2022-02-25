@@ -82,6 +82,7 @@ io.on('connection', socket => {
         users: getRoomUsers(user.room),
       });
 */
+
 // Use the port 3000 or the environment variable
 const PORT = 3000 || process.env.PORT;
 

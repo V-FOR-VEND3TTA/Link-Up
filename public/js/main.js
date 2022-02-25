@@ -4,7 +4,7 @@ const chatMessages = document.querySelector(".chat-messages");
 const roomName = document.getElementById("room-name");
 const userList = document.getElementById("users");
 
-// Get username and room from URL
+// Get username and room from URL using the Query String library
 const { username, room } = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
 });
