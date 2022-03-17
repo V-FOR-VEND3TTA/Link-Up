@@ -17,6 +17,9 @@ body {
   font-size: 16px;
   background: var(--light-color);
   margin: 20px;
+  background-image: url('../images/developer.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 ul {
@@ -126,7 +129,7 @@ a {
 
 /* Join Page */
 .join-container {
-  max-width: 500px;
+  max-width: 600px;
   margin: 80px auto;
   color: #fff;
 }
@@ -146,6 +149,7 @@ a {
 .join-main {
   padding: 30px 40px;
   background: var(--dark-color-b);
+  border-radius: 0 0 10px 10px;
 }
 
 .join-main p {
